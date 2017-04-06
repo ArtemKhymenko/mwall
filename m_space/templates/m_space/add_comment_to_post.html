@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+  {% if user.is_authenticated %}
+    <form method="POST" class="post-form">
+      {% csrf_token %}
+      {{ form_comment.as_p }}
+      <button type="submit" class="save btn btn-primary ">Сохранить</button>
+    </form>
+  {% endif %}
+{% endblock %}

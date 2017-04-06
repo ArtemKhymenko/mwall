@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+<div class="text-center">
+  <h1>Стена сообщений</h1><p>
+    {% if user and not user.is_anonymous %}
+      <strong>Вы, {{ user.get_full_name }}!</strong>
+      <br>
+      <a href="/logout">Logout</a>
+    {% endif %}
+
+  {% if user.is_authenticated %}
+    <form method="POST" class="post-form">
+      {% csrf_token %}
+      {{ form_post.as_p }}
+      <button type="submit" class="save btn btn-success ">Добавить сообщение</button>
+    </form>
+  {% else %}
+    <a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}" class="btn-social btn-outline"><i class="fa fa-fw fa-twitter fa-2x"></i>Login with Twitter</a>
+    <p>Для добавления и комментирования сообщений выполните вход</p>
+  {% endif %}
+</div>
+  {% for post in posts %}
+    <div class="post">
+
+
+
+      <h1>{{ post.title }}</h1>
+      <h6>Опубликовано {{ post.created|date }} автор: {{ post.author }}</h6>
+      <p class="post-text">{{ post.text|linebreaksbr }}</p>
+    <hr>
+    {% for comment in post.comments.all %}
+      <div>
+        <div class="comment">
+          <div>{{ comment.created|date }}</div>
+          <strong>{{ comment.name }}</strong>
+          <p>{{ comment.body|linebreaks }}</p>
+      </div>
+        {% for commentcomment in comment.commentcomment.all %}
+
+          <div class="commentcomment">
+            <div>{{ commentcomment.created|date }}</div>
+            <strong>{{ commentcomment.name }}</strong>
+            <p>{{ commentcomment.body|linebreaks }}</p>
+
+          </div>
+
+        {% endfor %}
+        {% if user.is_authenticated %}
+          <a class="btn btn-info btn-xs" href="{% url 'add_comment_to_comment' pk=comment.pk %}">Ответить</a>
+        {% endif %}
+      </div>
+    {% empty %}
+      <p>No comments yet...</p>
+    {% endfor %}
+    {% if user.is_authenticated %}
+      <a class="btn btn-primary btn-sm" href="{% url 'add_comment_to_post' pk=post.pk %}">Добавить комментарий</a>
+    {% endif %}
+    </div>
+
+  {% endfor %}
+{% endblock %}

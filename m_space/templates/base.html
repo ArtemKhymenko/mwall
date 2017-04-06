@@ -1,0 +1,23 @@
+{% load staticfiles %}
+<html>
+  <head>
+    <title>Стена сообщений</title>
+    <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/m_space.css' %}">
+
+  </head>
+  <body>
+
+    <div class="content container">
+      <div class="row">
+
+          {% block content %}
+          {% endblock %}
+
+      </div>
+    </div>
+  </body>
+</html>
